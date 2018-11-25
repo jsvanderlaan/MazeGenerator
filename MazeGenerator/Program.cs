@@ -1,4 +1,8 @@
 using MazeGenerator;
+using MazeGenerator.Cells;
+using MazeGenerator.Drawing;
+using MazeGenerator.ImageConverter;
+using MazeGenerator.Mazes;
 using System;
 using System.Collections.Specialized;
 using System.Configuration;
@@ -21,16 +25,22 @@ namespace MazeGeneration
             Configure();
 
             var filePath = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName + "\\" + inputDir + "\\" + file;
-            var grid = ImageToGridConverter.Convert(filePath, mazeHeight, minimalBrightness);
+            var grid = ImageToGridConverter<HexagonalCell>.Convert(filePath, mazeHeight, minimalBrightness);
 
-            for( int i = 1; i <= numberOfMazes; i++)
+            for ( int i = 1; i <= numberOfMazes; i++)
             {
                 var outputPath = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName + "\\" + outputDir + "\\" + DateTime.Now.ToString("yyyyMMddHHmmss") + "_" + i.ToString("D3") + outputFileType;
                 var outputPathAnswer = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName + "\\" + outputDir + "\\" + DateTime.Now.ToString("yyyyMMddHHmmss") + "_" + i.ToString("D3") + "answer" + outputFileType;
 
-                var maze = new GraphicalMaze(grid);
-                maze.DrawMaze(outputPath, false);
-                maze.DrawMaze(outputPathAnswer, true);
+                var maze = new Maze<HexagonalCell> (grid);
+                //var maze = new Maze<TriangularCell>(30, 30);
+
+                //maze.GenerateWithStack(maze.StartingCell.Position);
+                maze.GenerateWithRandomList(maze.StartingCell.Position);
+
+                var converter = new MazeToImageConverter<HexagonalCell>(maze);
+                converter.SaveMaze(outputPath, false);
+                converter.SaveMaze(outputPathAnswer, true);
             }
 
             Console.ReadKey();

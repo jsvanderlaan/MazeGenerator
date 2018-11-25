@@ -44,16 +44,22 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ColorGenerator.cs" />
-    <Compile Include="Common.cs" />
-    <Compile Include="Extensions.cs" />
-    <Compile Include="ImageToGridConverter.cs" />
-    <Compile Include="Maze.cs" />
+    <Compile Include="Cells\Cell.cs" />
+    <Compile Include="Cells\HexagonalCell.cs" />
+    <Compile Include="Cells\RectangularCell.cs" />
+    <Compile Include="Cells\TriangularCell.cs" />
+    <Compile Include="Cells\Wall.cs" />
+    <Compile Include="Common\Position.cs" />
+    <Compile Include="Common\Shape.cs" />
+    <Compile Include="Common\ColorRGB.cs" />
+    <Compile Include="Common\Extensions.cs" />
+    <Compile Include="Converters\ImageToGridConverter.cs" />
+    <Compile Include="Mazes\Maze.cs" />
     <Compile Include="Program.cs" />
-    <Compile Include="GraphicalMaze.cs" />
+    <Compile Include="Converters\MazeToImageConverter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TextImageGenerator.cs" />
-    <Compile Include="Timer.cs" />
+    <Compile Include="Common\Timer.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config">
