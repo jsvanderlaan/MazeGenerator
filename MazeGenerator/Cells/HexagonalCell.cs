@@ -93,5 +93,7 @@ namespace MazeGenerator.Cells
                 (int)(x + r * Math.Cos((-1 * (int)wall * 60.0 + 150.0) * Math.PI / 180.0)),
                 (int)(y + r * Math.Sin((-1 * (int)wall * 60.0 + 150.0) * Math.PI / 180.0)));
         }
+
+        public override Point GetCellCenter(int cellSize) => new Point((int)CenterX(cellSize), (int)CenterY(cellSize));
     }
 }

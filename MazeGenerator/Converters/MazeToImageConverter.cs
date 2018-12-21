@@ -61,14 +61,39 @@ namespace MazeGenerator.Drawing
             using (img = Graphics.FromImage(bitmap))
             {
                 if (drawPath) DrawPath();
-                DrawExitCell(_maze.ExitCell);
-                DrawEntranceCell(_maze.StartingCell);
+                //DrawExitCell(_maze.ExitCell);
+                //DrawEntranceCell(_maze.StartingCell);
                 DrawInactiveCells();
                 DrawWalls();
+                DrawStart();
+                DrawEnd();
             }
             bitmap.Save(filePath, ImageFormat.Png);
             bitmap.Dispose();
             _timer.Stop();
+        }
+
+        public void DrawStart()
+        {
+            var centerFrom = _maze.EntranceCell.GetCellCenter(_cellSize);
+            var centerTo = _maze.StartingCell.GetCellCenter(_cellSize);
+            DrawTriangle(centerFrom, centerTo, 0.25 * _cellSize);
+        }
+
+        public void DrawEnd()
+        {
+            var centerFrom = _maze.FinalCell.GetCellCenter(_cellSize);
+            var centerTo = _maze.ExitCell.GetCellCenter(_cellSize);
+            DrawTriangle(centerFrom, centerTo, 0.25 * _cellSize);
+        }
+
+        private void DrawTriangle(Point from, Point to, double percentage)
+        {
+            var vec = from.GetVector(to, percentage);
+            var left = new PointF(-1 * vec.Y, vec.X);
+            var right = new PointF(vec.Y, -1 * vec.X);
+            var points = new Point[] { from.Move(left), from.Move(vec), from.Move(right) };
+            img.FillPolygon(_entranceBrush, points);
         }
 
         public void DrawInactiveCells()
@@ -96,11 +121,13 @@ namespace MazeGenerator.Drawing
             C curr = _maze.ExitCell;
             Position end = _maze.StartingCell.Position;
             int dist = curr.Distance;
+            Brush brush = new SolidBrush(Extensions.GetColorInRange(curr.Distance, dist));
+            DrawInnerCell(curr, brush);
             while (curr.Position != end)
             {
-                Brush brush = new SolidBrush(Extensions.GetColorInRange(curr.Distance, dist));
-                DrawInnerCell(curr, brush);
                 curr = _maze.Cell(curr.Predecessor);
+                brush = new SolidBrush(Extensions.GetColorInRange(curr.Distance, dist));
+                DrawInnerCell(curr, brush);
             }
         }
 

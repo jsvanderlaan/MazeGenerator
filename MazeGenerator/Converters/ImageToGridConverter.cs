@@ -38,7 +38,8 @@ namespace MazeGenerator.ImageConverter
                             if (X < input.Width && Y < input.Height)
                             {
                                 gridSize++;
-                                totalBrightness += input.GetPixel(X, Y).GetBrightness();
+                                var pix = input.GetPixel(X, Y);
+                                totalBrightness += pix.A == 0 ? 1.0 : pix.GetBrightness();
                             }
                         }
                     }

@@ -43,22 +43,25 @@ namespace MazeGenerator.Cells
 
         public override double RelativeWidth() => 1.0;
         public override double RelativeHeight() => 1.0;
+        private Point TopLeft(int cellSize) => new Point((int)(Position.X * RelativeWidth() * cellSize), (int)(Position.Y * RelativeHeight() * cellSize));
 
         public override IEnumerable<Point> GetWall(Wall wall, int cellSize)
         {
-            var p = new Point((int)(Position.X * RelativeWidth() * cellSize), (int)(Position.Y * RelativeHeight() * cellSize));
+            var p = TopLeft(cellSize);
             yield return (wall == Wall.Bottom || wall == Wall.Right) ? new Point(p.X + cellSize, p.Y + cellSize) : new Point(p.X, p.Y);
             yield return (wall == Wall.Top || wall == Wall.Right) ? new Point(p.X + cellSize, p.Y) : new Point(p.X, p.Y + cellSize);
         }
 
         public override IEnumerable<Point> GetCellCorners(int cellSize)
         {
-            var p = new Point((int)(Position.X * RelativeWidth() * cellSize), (int)(Position.Y * RelativeHeight() * cellSize));
+            var p = TopLeft(cellSize);
 
             yield return new Point(p.X, p.Y);
             yield return new Point(p.X + cellSize, p.Y);
             yield return new Point(p.X + cellSize, p.Y + cellSize);
             yield return new Point(p.X, p.Y + cellSize);
         }
+
+        public override Point GetCellCenter(int cellSize) => new Point((int)(Position.X * RelativeWidth() * cellSize + 0.5 * cellSize), (int)(Position.Y * RelativeHeight() * cellSize + 0.5 * cellSize));
     }
 }

@@ -1,6 +1,7 @@
 ﻿using MazeGenerator.Cells;
 using MazeGenerator.Drawing;
 using System;
+using System.Windows;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -20,11 +21,24 @@ namespace MazeGenerator.Common
             }
         }
 
-        //public static Wall GetOpposingWall(this Wall wall)
-        //{
-        //    return (Wall)((int)(wall + 3) % 6);
-        //}
+        public static T Random<T>(this IEnumerable<T> source, Random rng) => source.ElementAt(rng.Next(source.Count()));
 
+        public static double Distance(this Point a, Point b)
+        {
+            var vector = a.GetVector(b);
+            return Math.Sqrt(vector.X * vector.X + vector.Y * vector.Y);
+        }
+        public static PointF GetVector(this Point a, Point b, double distance)
+        {
+            var vector = a.GetVector(b);
+            var length = a.Distance(b);
+            return new PointF((float)(vector.X / length * distance), (float)(vector.Y / length * distance));
+        }
+
+        public static Point GetVector(this Point a, Point b) => new Point(b.X - a.X, b.Y - a.Y);
+        public static Point Move(this Point a, PointF vec) => new Point((int)(a.X + vec.X), (int)(a.Y + vec.Y));
+
+        public static Point GetPoint(double X, double Y) => new Point((int)(X), (int)(Y)); 
         public static Point Point(this Position pos) => new Point(pos.X, pos.Y);
 
         public static Point TopLeft(this Rectangle rect) => new Point(rect.Left, rect.Top);
@@ -34,7 +48,7 @@ namespace MazeGenerator.Common
 
         public static Color GetColorInRange(double num, double max)
         {
-            return HSL2RGB(num / max, 0.5, 0.5);
+            return HSL2RGB(num / max == 1.0 ? 0.999: num / max, 0.5, 0.5);
         }
 
         // Given H,S,L in range of 0-1

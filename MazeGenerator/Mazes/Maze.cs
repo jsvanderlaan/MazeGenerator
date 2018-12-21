@@ -17,7 +17,9 @@ namespace MazeGenerator.Mazes
 
         private C[,] _cells;
         private C _startingCell;
+        private C _entanceCell;
         private C _exitCell;
+        private C _finalCell;
 
         private Random _rng = new Random();
         private readonly bool _useEdges;
@@ -87,6 +89,7 @@ namespace MazeGenerator.Mazes
         public C this[int x, int y] => _cells[x, y];
         public IEnumerable<C> Cells() => _cells.Cast<C>();
         public C Cell(Position p) => _cells[p.X, p.Y];
+        public IEnumerable<C> Cells(IEnumerable<Position> ps) => ps.Select(p => Cell(p));
         private IEnumerable<C> GetNeighbours(C cell) => cell.GetNeighbours().Where(p => p.X >= 0 && p.Y >= 0 && p.X < Width && p.Y < Height).Select(p => Cell(p));
         private bool IsEdgeCell(C cell) => GetNeighbours(cell).Any(c => !c.Active);
 
@@ -133,6 +136,7 @@ namespace MazeGenerator.Mazes
                 }
             } while (CellList.Count > 0);
 
+            FinishMaze();
             stackTimer.Stop();
         }
 
@@ -175,13 +179,36 @@ namespace MazeGenerator.Mazes
                 }
             } while (CellStack.Count > 0);
 
+            FinishMaze();
             stackTimer.Stop();
+        }
+
+        private void FinishMaze()
+        {
+            //Create ExitCell
+            var end = ExitCell;
         }
 
         private void RemoveWalls(C c1, C c2)
         {
             c1.RemoveWall(c1.GetWallForNeighbour(c2.Position));
             c2.RemoveWall(c2.GetWallForNeighbour(c1.Position));
+        }
+
+        public C EntranceCell
+        {
+            get
+            {
+                return _entanceCell;
+            }
+        }
+
+        public C FinalCell
+        {
+            get
+            {
+                return _finalCell;
+            }
         }
 
         public C StartingCell
@@ -192,8 +219,9 @@ namespace MazeGenerator.Mazes
                 {
                     return _startingCell;
                 }
-                var cells = Cells().Where(c => c.Active && (!_useEdges || IsEdgeCell(c)));
-                _startingCell = cells.ElementAt(_rng.Next(cells.Count()));
+                _startingCell = Cells().Where(c => c.Active && (!_useEdges || IsEdgeCell(c))).Random(_rng);
+                _entanceCell = Cells(_startingCell.GetNeighbours()).Where(c => !c.Active).Random(_rng);
+                RemoveWalls(_startingCell, _entanceCell);
                 return _startingCell;
             }
         }
@@ -219,6 +247,9 @@ namespace MazeGenerator.Mazes
                 }
 
                 _exitCell = curr;
+                _finalCell = Cells(_exitCell.GetNeighbours()).Where(c => !c.Active).Random(_rng);
+
+                RemoveWalls(_exitCell, FinalCell);
 
                 Debug.WriteLine($"The exit is at distance {dist} and position {curr.Position}");
 

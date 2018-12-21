@@ -69,5 +69,7 @@ namespace MazeGenerator.Cells
             yield return new Point((int)(x + cellSize), (int)(y + (TopWall ? 0.0 : cellSize)));
             yield return new Point((int)(x + cellSize / 2.0), (int)(y + (TopWall ? cellSize : 0.0)));
         }
+
+        public override Point GetCellCenter(int cellSize) => new Point((int)(RelativeX(cellSize) + 0.5 * cellSize), (int)(RelativeY(cellSize) + 0.5 * cellSize));
     }
 }

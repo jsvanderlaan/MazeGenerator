@@ -36,6 +36,7 @@ namespace MazeGenerator.Cells
             }
         }
 
+
         public abstract ICollection<Position> GetNeighbours();
 
         public abstract Wall GetWallForNeighbour(Position cell);
@@ -48,6 +49,7 @@ namespace MazeGenerator.Cells
         public abstract double RelativeWidth();
         public abstract double RelativeHeight();
 
+        public abstract Point GetCellCenter(int cellSize);
         public abstract IEnumerable<Point> GetCellCorners(int cellSize);
         public abstract IEnumerable<Point> GetWall(Wall wall, int cellSize);
     }
