@@ -17,15 +17,16 @@ namespace MazeGeneration
         static string inputDir;
         static string outputFileType;
         static int mazeHeight;
-        static double minimalBrightness;
+        static double brightness;
         static int numberOfMazes;
+        static bool minimal;
 
         static void Main(string[] args)
         {
             Configure();
 
             var filePath = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName + "\\" + inputDir + "\\" + file;
-            var grid = file == "" ? new bool[0,0] : ImageToGridConverter<HexagonalCell>.Convert(filePath, mazeHeight, minimalBrightness);
+            var grid = file == "" ? new bool[0,0] : ImageToGridConverter<HexagonalCell>.Convert(filePath, mazeHeight, brightness, minimal);
 
             for ( int i = 1; i <= numberOfMazes; i++)
             {
@@ -53,8 +54,9 @@ namespace MazeGeneration
             inputDir = config["inputDir"];
             outputFileType = config["outputFileType"];
             mazeHeight = Int32.Parse(config["mazeHeight"]);
-            minimalBrightness = Double.Parse(config["minimalBrightness"]);
+            brightness = Double.Parse(config["brightness"]);
             numberOfMazes = Int32.Parse(config["numberOfMazes"]);
+            minimal = Boolean.Parse(config["minimal"]);
         }
     }
 }

@@ -7,7 +7,7 @@ namespace MazeGenerator.ImageConverter
 {
     public static class ImageToGridConverter<C> where C : Cell, new()
     {
-        public static Boolean[,] Convert(string imagePath, int outputHeight, double minimalBrightness)
+        public static Boolean[,] Convert(string imagePath, int outputHeight, double brightness, bool minimal)
         {
             var timer = new Timer("Processing image");
             var input = new Bitmap(imagePath);
@@ -44,7 +44,7 @@ namespace MazeGenerator.ImageConverter
                         }
                     }
 
-                    output[x, y] = totalBrightness / gridSize < minimalBrightness;
+                    output[x, y] = minimal ? totalBrightness / gridSize < brightness : totalBrightness / gridSize > brightness;
                 }
             }
 
