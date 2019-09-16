@@ -1,7 +1,5 @@
-﻿using MazeGenerator.Cells;
-using MazeGenerator.Drawing;
+﻿using MazeGenerator.Drawing;
 using System;
-using System.Windows;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -46,10 +44,7 @@ namespace MazeGenerator.Common
         public static Point BottomLeft(this Rectangle rect) => new Point(rect.Left, rect.Bottom);
         public static Point BottomRight(this Rectangle rect) => new Point(rect.Right, rect.Bottom);
 
-        public static Color GetColorInRange(double num, double max)
-        {
-            return HSL2RGB(num / max == 1.0 ? 0.999: num / max, 0.5, 0.5);
-        }
+        public static Color GetColorInRange(double num, double max) => HSL2RGB(num / max == 1.0 ? 0.999 : num / max, 0.5, 0.5);
 
         // Given H,S,L in range of 0-1
         // Returns a Color (RGB struct) in range of 0-255
