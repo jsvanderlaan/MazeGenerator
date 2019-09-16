@@ -2,10 +2,10 @@
 
 namespace WebApi.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/values")]
     public class ValuesController : Controller
     {
-        private string _value = "testings";
+        private string _value = "joooohos";
 
         // GET api/values
         [HttpGet]
@@ -18,7 +18,7 @@ namespace WebApi.Controllers
         [HttpGet("{id}")]
         public string Get(int id)
         {
-            return "value";
+            return $"jos{id}";
         }
 
         // POST api/values
@@ -26,18 +26,6 @@ namespace WebApi.Controllers
         public void Post([FromBody]string value)
         {
             _value = value;
-        }
-
-        // PUT api/values/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody]string value)
-        {
-        }
-
-        // DELETE api/values/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
         }
     }
 }
