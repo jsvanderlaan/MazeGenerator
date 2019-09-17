@@ -3,6 +3,7 @@
 
 Input/
 Output/
+WebApi/wwwroot
 
 # User-specific files
 *.suo
