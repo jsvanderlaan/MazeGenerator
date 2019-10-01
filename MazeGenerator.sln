@@ -5,7 +5,11 @@ VisualStudioVersion = 15.0.27703.2042
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MazeGenerator", "MazeGenerator\MazeGenerator.csproj", "{B9BF9544-272A-4A1E-857E-AEC7EA638A2A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApi", "WebApi\WebApi.csproj", "{625BE4B0-6542-4BD0-9117-9FD91D378372}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebApi", "WebApi\WebApi.csproj", "{625BE4B0-6542-4BD0-9117-9FD91D378372}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Entities", "Entity\Entities.csproj", "{C7E77C8C-CD48-442C-9F8A-F91BB2252976}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common", "Common\Common.csproj", "{48BF2E64-B700-4938-BDDB-ACE5CF0183A0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +25,14 @@ Global
 		{625BE4B0-6542-4BD0-9117-9FD91D378372}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{625BE4B0-6542-4BD0-9117-9FD91D378372}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{625BE4B0-6542-4BD0-9117-9FD91D378372}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C7E77C8C-CD48-442C-9F8A-F91BB2252976}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C7E77C8C-CD48-442C-9F8A-F91BB2252976}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C7E77C8C-CD48-442C-9F8A-F91BB2252976}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C7E77C8C-CD48-442C-9F8A-F91BB2252976}.Release|Any CPU.Build.0 = Release|Any CPU
+		{48BF2E64-B700-4938-BDDB-ACE5CF0183A0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{48BF2E64-B700-4938-BDDB-ACE5CF0183A0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{48BF2E64-B700-4938-BDDB-ACE5CF0183A0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{48BF2E64-B700-4938-BDDB-ACE5CF0183A0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

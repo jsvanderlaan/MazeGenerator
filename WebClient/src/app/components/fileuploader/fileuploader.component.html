@@ -1,7 +1,23 @@
 <div class="form-group">
-    <label for="file">Choose File</label>
-    <input type="file"
+    <label class="btn btn-info" for="file">
+           Choose a file
+    </label>
+    <input [disabled]="loading" type="file"
            id="file"
-           (change)="handleFileInput($event.target.files)">
-    <button (click)="uploadFileToActivity()">Send</button>
+           (change)="handleFileInput($event.target.files)"
+           [accept]="allowedFileTypes.join(',')"
+           style="display: none;">
+    <br/>
+    <button [disabled]="!file || errors.length > 0" (click)="uploadFileToActivity()">Send</button>
+    <ul>
+        <li *ngFor="let error of errors">
+          {{error}}
+        </li>
+      </ul>
+    <br/>
+    <img *ngIf="loading" src="assets/loading.gif" />
+    <br/>
+    <div *ngIf="dataUrl">vvvvvvvvvvvv a-maze-ing vvvvvvvvvvv</div>
+    <br/>
+    <img *ngIf="dataUrl" id="responsive-image" [src]="dataUrl" />
 </div>
