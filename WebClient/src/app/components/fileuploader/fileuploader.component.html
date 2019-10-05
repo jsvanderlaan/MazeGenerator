@@ -1,23 +1,32 @@
-<div class="form-group">
-    <label class="btn btn-info" for="file">
-           Choose a file
-    </label>
-    <input [disabled]="loading" type="file"
-           id="file"
-           (change)="handleFileInput($event.target.files)"
-           [accept]="allowedFileTypes.join(',')"
-           style="display: none;">
-    <br/>
-    <button [disabled]="!file || errors.length > 0" (click)="uploadFileToActivity()">Send</button>
+<div class="form-group row">
+  <div *ngIf="input" class="col-12">
+    <div>{{input.name}} ({{input.size}} bytes)</div>
+  </div>
+  <div class="col-12">
+    <div *ngIf="!input || errors.length > 0">
+      <label class="btn btn-warning" for="file">
+            Choose an image
+      </label>
+      <input type="file"
+            id="file"
+            (change)="handleFileInput($event.target.files)"
+            [accept]="allowedFileTypes.join(',')"
+            style="display: none;">
+    </div>
+    <div *ngIf="input && errors.length === 0">
+        <button class="btn btn-info" [disabled]="loading" (click)="uploadFileToActivity()">Generate</button>
+        <button class="btn btn-warning" [disabled]="loading" (click)="removeFile()">Delete</button>
+      </div>
+  </div>
+  <div class="col-12">
+  </div>
+</div>
+<div class="row">
+  <div *ngIf="errors.length > 0" class="col-md-24">  
     <ul>
-        <li *ngFor="let error of errors">
-          {{error}}
-        </li>
-      </ul>
-    <br/>
-    <img *ngIf="loading" src="assets/loading.gif" />
-    <br/>
-    <div *ngIf="dataUrl">vvvvvvvvvvvv a-maze-ing vvvvvvvvvvv</div>
-    <br/>
-    <img *ngIf="dataUrl" id="responsive-image" [src]="dataUrl" />
+      <li *ngFor="let error of errors">
+        {{error}}
+      </li>
+    </ul>
+  </div>
 </div>

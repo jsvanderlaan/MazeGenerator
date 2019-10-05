@@ -6,5 +6,8 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'MazeGenerator';
+  result: any;
+  onResult(result: any) {
+    this.result = result
+  }
 }

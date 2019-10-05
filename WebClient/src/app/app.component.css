@@ -1,0 +1,9 @@
+.background{
+    background-size:cover;
+    background-position: bottom right;
+    background-image: url(/assets/background.jpg);
+    min-height:100vh;
+    position: fixed;
+    width: 100%;
+    right: 0px;
+}

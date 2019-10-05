@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Output, EventEmitter } from '@angular/core';
 import { FileUploadService } from 'src/app/services/file-upload.service';
 
 @Component({
@@ -6,7 +6,9 @@ import { FileUploadService } from 'src/app/services/file-upload.service';
   templateUrl: './fileuploader.component.html',
   styleUrls: ['./fileuploader.component.css']
 })
-export class FileuploaderComponent implements OnInit {
+export class FileuploaderComponent {
+  @Output() result = new EventEmitter<any>();
+  constructor(private fileUploadService: FileUploadService) { }
 
   maxFileSize = 1024 * 1024 * 10;
   allowedFileTypes = [
@@ -14,32 +16,34 @@ export class FileuploaderComponent implements OnInit {
     "image/jpg",
     "image/jpeg"
   ]
-
-  file: File = null;
-  dataUrl: string;
+  input: File = null;
+  //dataUrl: string;
   loading = false;
   errors: string[] = [];
-  constructor(private fileUploadService: FileUploadService) { }
-
-  ngOnInit() {
-  }
 
   handleFileInput(files: FileList) {
-    this.file = files.item(0);
-    if(this.file.size > this.maxFileSize) {
-      this.errors.push("Upload a smaller file (max. 10MB)")  
+    this.errors = [];
+    this.input = files.item(0);
+    if(this.input.size > this.maxFileSize) {
+      this.errors.push("Choose a smaller file (max. 10MB)")  
     }
-    if(!this.allowedFileTypes.includes(this.file.type)){
-      this.errors.push("Upload a file with type jpeg, jpg or png")
+    if(!this.allowedFileTypes.includes(this.input.type)){
+      this.errors.push("Choose a file with type jpeg, jpg or png")
     }
+  }
+
+  removeFile(){
+    this.input = null;
   }
 
   uploadFileToActivity() {
     this.loading = true;
-    this.fileUploadService.postFile(this.file).subscribe(data => {
-        this.dataUrl = `data:image/png;base64,${ data }`;
+    this.result.emit('assets/loading.gif');
+    this.fileUploadService.postFile(this.input).subscribe(data => {
+        this.result.emit(`data:image/png;base64,${ data }`);
         this.loading = false;
       }, error => {
+        this.result.emit(null);
         this.loading = false;
       });
   }
