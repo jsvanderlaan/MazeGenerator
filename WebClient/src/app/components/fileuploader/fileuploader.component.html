@@ -1,8 +1,15 @@
-<div class="form-group row">
+<div class="form-group row" id="fileuploader">
   <div *ngIf="input" class="col-12">
-    <div>{{input.name}} ({{input.size}} bytes)</div>
+    <div class="row">
+      <div class="col-auto">
+          <button class="btn btn-delete" [disabled]="loading" (click)="removeFile()">&times;</button>
+      </div>
+      <div class="col inputname">
+          {{input.name}} ({{input.size}} bytes)
+      </div>
+    </div>
   </div>
-  <div class="col-12">
+  <div class="col-12" style="margin-top: 1rem">
     <div *ngIf="!input || errors.length > 0">
       <label class="btn btn-warning" for="file">
             Choose an image
@@ -15,7 +22,6 @@
     </div>
     <div *ngIf="input && errors.length === 0">
         <button class="btn btn-info" [disabled]="loading" (click)="uploadFileToActivity()">Generate</button>
-        <button class="btn btn-warning" [disabled]="loading" (click)="removeFile()">Delete</button>
       </div>
   </div>
   <div class="col-12">

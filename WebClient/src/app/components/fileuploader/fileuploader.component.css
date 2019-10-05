@@ -1,4 +1,21 @@
-#responsive-image {  width: 100%;  height: auto; } 
 label {
     cursor: pointer;
+}
+#fileuploader {
+    padding-top: 2vh;
+}
+
+.btn-delete {
+    color: red;
+    border: 1px solid red;
+    margin-right: 0.375rem;
+    border-radius: .5rem;
+    padding: 0px .375rem;
+}
+
+.inputname{
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    display: inline-block;
+    overflow: hidden !important;
 }
