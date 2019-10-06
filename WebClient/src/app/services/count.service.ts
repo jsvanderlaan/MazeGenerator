@@ -4,18 +4,16 @@ import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
 
 @Injectable()
-export class FileUploadService {
+export class CountService {
 
   constructor(
       private http: HttpClient
     ) { }
 
     private prefix = environment.production ? '' : 'http://localhost:50485';
-    private endpoint =  this.prefix + '/api/fileupload';
+    private endpoint =  this.prefix + '/api/count';
 
-    postFile(fileToUpload: File): Observable<string> {
-      const formData: FormData = new FormData();
-      formData.append('file', fileToUpload, fileToUpload.name);
-      return this.http.post<string>(this.endpoint, formData);
+    countClick(name: string): Observable<any> {
+      return this.http.get(this.endpoint + '/click/' + name);
     }
 }

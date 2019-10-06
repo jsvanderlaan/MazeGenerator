@@ -9,13 +9,17 @@ import { FileUploadService } from './services/file-upload.service';
 import { HttpClientModule } from '@angular/common/http';
 import { ResultDisplayComponent } from './components/result-display/result-display.component';
 import { HeaderComponent } from './components/header/header.component';
+import { FileSizePipe } from './pipes/file-size.pipe';
+import { CountService } from './services/count.service';
+import { BaseService } from './services/base.service';
 
 @NgModule({
   declarations: [
     AppComponent,
     FileuploaderComponent,
     ResultDisplayComponent,
-    HeaderComponent
+    HeaderComponent,
+    FileSizePipe
   ],
   imports: [
     BrowserModule,
@@ -23,7 +27,10 @@ import { HeaderComponent } from './components/header/header.component';
     HttpClientModule
   ],
   providers: [
-    FileUploadService
+    FileUploadService,
+    CountService,
+    BaseService,
+    FileSizePipe
   ],
   bootstrap: [AppComponent]
 })

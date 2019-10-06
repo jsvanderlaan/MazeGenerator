@@ -1,5 +1,6 @@
 import { Component, Output, EventEmitter } from '@angular/core';
 import { FileUploadService } from 'src/app/services/file-upload.service';
+import { CountService } from 'src/app/services/count.service';
 
 @Component({
   selector: 'app-fileuploader',
@@ -8,7 +9,7 @@ import { FileUploadService } from 'src/app/services/file-upload.service';
 })
 export class FileuploaderComponent {
   @Output() result = new EventEmitter<any>();
-  constructor(private fileUploadService: FileUploadService) { }
+  constructor(private fileUploadService: FileUploadService, private countService: CountService) { }
 
   maxFileSize = 1024 * 1024 * 10;
   allowedFileTypes = [
@@ -32,13 +33,18 @@ export class FileuploaderComponent {
     }
   }
 
-  removeFile(){
+  removeFile() {
     this.input = null;
   }
 
-  uploadFileToActivity() {
+  countClick(name: string) {
+    this.countService.countClick(name).subscribe();
+  }
+
+  uploadFile() {
     this.loading = true;
     this.result.emit('assets/loading.gif');
+    this.countClick('Upload');
     this.fileUploadService.postFile(this.input).subscribe(data => {
         this.result.emit(`data:image/png;base64,${ data }`);
         this.loading = false;

@@ -5,7 +5,7 @@
           <button class="btn btn-delete" [disabled]="loading" (click)="removeFile()">&times;</button>
       </div>
       <div class="col inputname">
-          {{input.name}} ({{input.size}} bytes)
+          ({{input.size | fileSize}}) {{input.name}} 
       </div>
     </div>
   </div>
@@ -21,7 +21,7 @@
             style="display: none;">
     </div>
     <div *ngIf="input && errors.length === 0">
-        <button class="btn btn-info" [disabled]="loading" (click)="uploadFileToActivity()">Generate</button>
+        <button class="btn btn-warning" [disabled]="loading" (click)="uploadFile()">Generate</button>
       </div>
   </div>
   <div class="col-12">
