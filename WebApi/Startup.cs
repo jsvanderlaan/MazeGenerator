@@ -20,7 +20,7 @@ namespace WebApi
         public void ConfigureServices(IServiceCollection services)
         {
             services
-                .AddSingleton<IBaseRepository>(new BaseRepository((DatabaseOptions)Configuration.GetValue(typeof(DatabaseOptions), "DatabaseOptions")))
+                .AddSingleton<IBaseRepository>(new BaseRepository(Configuration.GetSection("DatabaseOptions").Get<DatabaseOptions>()))
                 .AddSingleton<ICountRepository, CountRepository>();
             
             services
