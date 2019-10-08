@@ -13,9 +13,9 @@ namespace DataAccess
         {
             ServerOptions serverOptions = new ServerOptions
             {
-                DataDirectory = @"D:\Projecten HDD\RavenDb\MazeGenerator",
-                ServerUrl = "http://127.0.0.1:8080",
-                FrameworkVersion = "2.2.7"
+                DataDirectory = options.DataDirectory, // @"D:\Projecten HDD\RavenDb\MazeGenerator",
+                ServerUrl = options.ServerUrl, //"http://127.0.0.1:8080",
+                FrameworkVersion = options.FrameworkVersion //"2.2.7"
             };
             EmbeddedServer.Instance.StartServer(serverOptions);
             _store = EmbeddedServer.Instance.GetDocumentStore("BramdaDb");
