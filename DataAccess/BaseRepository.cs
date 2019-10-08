@@ -1,6 +1,7 @@
 ﻿using Raven.Client.Documents;
 using Raven.Client.Documents.Session;
 using Raven.Embedded;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace DataAccess
@@ -15,7 +16,10 @@ namespace DataAccess
             {
                 DataDirectory = options.DataDirectory, // @"D:\Projecten HDD\RavenDb\MazeGenerator",
                 ServerUrl = options.ServerUrl, //"http://127.0.0.1:8080",
-                FrameworkVersion = options.FrameworkVersion //"2.2.7"
+                FrameworkVersion = options.FrameworkVersion, //"2.2.7"
+                CommandLineArgs = new List<string> {
+                    "Security.UnsecuredAccessAllowed=PrivateNetwork"
+                }
             };
             EmbeddedServer.Instance.StartServer(serverOptions);
             _store = EmbeddedServer.Instance.GetDocumentStore("BramdaDb");
