@@ -1,12 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.Linq;
 
 namespace Common
 {
     public static class Extensions
     {
+        public static string GetMimeType(this ImageFormat imageFormat)
+        {
+            ImageCodecInfo[] codecs = ImageCodecInfo.GetImageEncoders();
+            return codecs.First(codec => codec.FormatID == imageFormat.Guid).MimeType;
+        }
+
         public static IEnumerable<T> Shuffle<T>(this IEnumerable<T> source, Random rng)
         {
             var e = source.ToArray();

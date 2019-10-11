@@ -3,14 +3,13 @@ using System.Threading.Tasks;
 
 namespace DataAccess
 {
-    public class CountRepository : ICountRepository
+    public class CountRepository : BaseRepository, ICountRepository
     {
-        private readonly IBaseRepository _baseRepository;
 
-        public CountRepository(IBaseRepository baseRepository)
+        public CountRepository() : base("Counts")
         {
-            _baseRepository = baseRepository;
         }
-        public async Task StoreCount(ICount count) => await _baseRepository.Store(count); 
+
+        public async Task StoreCount(ICount count) => await Store(count); 
     }
 }

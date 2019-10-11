@@ -5,7 +5,12 @@ using Entities.Converters;
 using Common;
 using System;
 using Entities.Mazes;
-using Microsoft.AspNetCore.Hosting;
+using System.Drawing;
+using System.Drawing.Imaging;
+using DataAccess;
+using System.Collections.Generic;
+using DataTransferObjects.Mappers;
+using DataTransferObjects;
 
 namespace WebApi.Controllers
 {
@@ -14,53 +19,54 @@ namespace WebApi.Controllers
     public class FileUploadController : Controller
     {
         private readonly Shape _shape = Shape.Hexagonal;
-        private readonly IHostingEnvironment _env;
+        private readonly IMazeRepository _mazeRepository;
+        private readonly MazeMapper _mapper;
 
-        public FileUploadController(IHostingEnvironment env)
+        public FileUploadController(IMazeRepository repo)
         {
-            _env = env;
+            _mazeRepository = repo;
+            _mapper = new MazeMapper();
         }
 
         [HttpPost]
         public async Task<string> Post()
         {
-            var guid = Guid.NewGuid();
             var request = await HttpContext.Request.ReadFormAsync();
             var formFile = request.Files?[0];
             if (formFile == null) throw new FileNotFoundException();
 
-            Boolean[,] grid;
-
-            var dir = Path.Combine(_env.WebRootPath, "results");
-            var extension = Path.GetExtension(formFile.FileName);
-            Directory.CreateDirectory(dir);
-            using (var fileStream = new FileStream(Path.Combine(dir, $"{guid}_original{extension}"), FileMode.Create))
+            string response;
+            using (var original = Image.FromStream(formFile.OpenReadStream()))
             {
-                await formFile.CopyToAsync(fileStream);
+                var grid = ImageToGridConverter.Convert(new Bitmap(original), 100, 0.5, true, _shape);
+                var maze = new Maze(grid, _shape, true).GenerateWithRandomList();
+                var imageConverter = new MazeToImageConverter(maze);
+                var solutionConverter = new MazeToImageConverter(maze);
+                using (var imageStream = new MemoryStream())
+                using (var solutionStream = new MemoryStream())
+                using (var originalStream = new MemoryStream())
+                using (var image = imageConverter.GetMaze(false))
+                using (var solution = solutionConverter.GetMaze(true))
+                {
+                    image.Save(imageStream, ImageFormat.Png);
+                    solution.Save(solutionStream, ImageFormat.Png);
+                    original.Save(originalStream, original.RawFormat);
+                    originalStream.Position = 0;
+                    imageStream.Position = 0;
+                    solutionStream.Position = 0;
+                    var name = Path.GetFileNameWithoutExtension(formFile.FileName);
+                    var extension = Path.GetExtension(formFile.FileName);
+                    await _mazeRepository.StoreMaze(_mapper.Map(maze), new List<ImageDto>
+                    {
+                        new ImageDto { Data = originalStream, Name = $"{name}{extension}", ContentType = original.RawFormat.GetMimeType() },
+                        new ImageDto { Data = imageStream, Name = $"{name}_maze.png", ContentType = ImageFormat.Png.GetMimeType() },
+                        new ImageDto { Data = solutionStream, Name = $"{name}_solution.png", ContentType = ImageFormat.Png.GetMimeType() },
+                    });
+                    response = Convert.ToBase64String(imageStream.ToArray());
+                }
             }
 
-            using (var memoryStream = new MemoryStream())
-            {
-                await formFile.CopyToAsync(memoryStream);
-                var type = Path.GetExtension(formFile.FileName);
-                grid = ImageToGridConverter.Convert(memoryStream, 100, 0.5, true, _shape);
-            }
-
-            var maze = new Maze(grid, _shape, true);
-            maze.GenerateWithRandomList(maze.StartingCell.Position);
-            var converter = new MazeToImageConverter(maze);
-            var result = converter.GetMaze(false, Path.Combine(dir, $"{guid}_maze{extension}"));
-            converter = new MazeToImageConverter(maze);
-            converter.GetMaze(true, Path.Combine(dir, $"{guid}_solution{extension}"));
-            var base64 = Convert.ToBase64String(result);
-            return base64; // new ResponseFile { Type = "image/png", Base64 = base64 };
-            //$"{{\"type\": \"image/png\", \"base64\": \"{base64}\""
+            return response;
         }
-    }
-
-    public class ResponseFile
-    {
-        public string Type { get; set; }
-        public string Base64 { get; set; }
     }
 }

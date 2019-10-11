@@ -1,9 +1,11 @@
-﻿using System.IO;
+﻿using System.Collections.Generic;
+using System.IO;
 using DataAccess;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Raven.Embedded;
 
 namespace WebApi
 {
@@ -19,8 +21,21 @@ namespace WebApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            var databaseOptions = Configuration.GetSection("DatabaseOptions").Get<DataAccess.DatabaseOptions>();
+
+            ServerOptions serverOptions = new ServerOptions
+            {
+                DataDirectory = databaseOptions.DataDirectory, // @"D:\Projecten HDD\RavenDb\MazeGenerator",
+                ServerUrl = databaseOptions.ServerUrl, //"http://127.0.0.1:8080",
+                FrameworkVersion = databaseOptions.FrameworkVersion, //"2.2.7"
+                CommandLineArgs = new List<string> {
+                    databaseOptions.Security
+                }
+            };
+            EmbeddedServer.Instance.StartServer(serverOptions);
+
             services
-                .AddSingleton<IBaseRepository>(new BaseRepository(Configuration.GetSection("DatabaseOptions").Get<DatabaseOptions>()))
+                .AddSingleton<IMazeRepository, MazeRepository>()
                 .AddSingleton<ICountRepository, CountRepository>();
             
             services

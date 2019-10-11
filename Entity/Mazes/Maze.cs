@@ -15,7 +15,11 @@ namespace Entities.Mazes
         public int Width;
         public int Height;
 
-        //public Shape Shape;
+        public Shape Shape;
+
+        public int NumberOfCells { get { return Cells().Count(c => c.Active); } }
+        public int Length { get { return ExitCell.Distance; } }
+
 
         private ICell[,] _cells;
 
@@ -31,7 +35,7 @@ namespace Entities.Mazes
 
         public Maze(Boolean[,] grid, Shape shape, bool useEdges)
         {
-            //Shape = shape;
+            Shape = shape;
             Width = grid.GetLength(0) + 2;
             Height = grid.GetLength(1) + 2;
 
@@ -95,13 +99,13 @@ namespace Entities.Mazes
         private IEnumerable<ICell> GetNeighbours(ICell cell) => cell.GetNeighbours().Where(p => p.X >= 0 && p.Y >= 0 && p.X < Width && p.Y < Height).Select(p => Cell(p));
         private bool IsEdgeCell(ICell cell) => GetNeighbours(cell).Any(c => !c.Active);
 
-        public void GenerateWithRandomList(Position pos)
+        public Maze GenerateWithRandomList()
         {
             int size = Cells().Where(c => c.Active).Count();
             var stackTimer = new Timer("Creating maze with random list");
             stackTimer.Start(size);
 
-            Position cPos = pos;
+            Position cPos = StartingCell.Position;
             int cDist = 0;
 
             List<Position> CellList = new List<Position>();
@@ -140,15 +144,16 @@ namespace Entities.Mazes
 
             FinishMaze();
             stackTimer.Stop();
+            return this;
         }
 
-        public void GenerateWithStack(Position pos)
+        public Maze GenerateWithStack()
         {
             int size = Cells().Where(c => c.Active).Count();
             var stackTimer = new Timer("Creating maze with stack");
             stackTimer.Start(size);
 
-            Position cPos = pos;
+            Position cPos = StartingCell.Position;
             int cDist = 0;
 
             Stack<Position> CellStack = new Stack<Position>();
@@ -183,6 +188,7 @@ namespace Entities.Mazes
 
             FinishMaze();
             stackTimer.Stop();
+            return this;
         }
 
         private void FinishMaze()

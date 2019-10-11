@@ -4,9 +4,8 @@ using System.Threading.Tasks;
 
 namespace DataAccess
 {
-    public interface IBaseRepository
+    public interface IMazeRepository
     {
-        Task Store(object obj);
-        Task Store(object obj, List<ImageDto> images);
+        Task StoreMaze(MazeDto entity, List<ImageDto> images);
     }
 }

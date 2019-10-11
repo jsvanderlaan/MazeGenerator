@@ -1,7 +1,9 @@
-﻿using Raven.Client.Documents;
+﻿using DataTransferObjects;
+using Raven.Client.Documents;
 using Raven.Client.Documents.Session;
 using Raven.Embedded;
 using System.Collections.Generic;
+using System.IO;
 using System.Threading.Tasks;
 
 namespace DataAccess
@@ -10,19 +12,9 @@ namespace DataAccess
     {
         private readonly IDocumentStore _store;
 
-        public BaseRepository(DatabaseOptions options)
+        public BaseRepository(string documentStore)
         {
-            ServerOptions serverOptions = new ServerOptions
-            {
-                DataDirectory = options.DataDirectory, // @"D:\Projecten HDD\RavenDb\MazeGenerator",
-                ServerUrl = options.ServerUrl, //"http://127.0.0.1:8080",
-                FrameworkVersion = options.FrameworkVersion, //"2.2.7"
-                CommandLineArgs = new List<string> {
-                    "Security.UnsecuredAccessAllowed=PrivateNetwork"
-                }
-            };
-            EmbeddedServer.Instance.StartServer(serverOptions);
-            _store = EmbeddedServer.Instance.GetDocumentStore("BramdaDb");
+            _store = EmbeddedServer.Instance.GetDocumentStore(documentStore);
         }
 
         public async Task Store(object obj)
@@ -30,6 +22,17 @@ namespace DataAccess
             using (IAsyncDocumentSession session = _store.OpenAsyncSession())
             {
                 await session.StoreAsync(obj);
+                await session.SaveChangesAsync();
+            }
+        }
+
+        public async Task Store(object obj, List<ImageDto> images)
+        {
+            using (IAsyncDocumentSession session = _store.OpenAsyncSession())
+            {
+                await session.StoreAsync(obj);
+                var id = session.Advanced.GetDocumentId(obj);
+                images.ForEach(image => session.Advanced.Attachments.Store(obj, image.Name, image.Data, image.ContentType));
                 await session.SaveChangesAsync();
             }
         }

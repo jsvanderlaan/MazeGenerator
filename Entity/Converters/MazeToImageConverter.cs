@@ -12,7 +12,6 @@ namespace Entities.Converters
 {
     public class MazeToImageConverter
     {
-        private string _filePath;
         private Timer _timer;
 
         private readonly int _cellSize;
@@ -48,17 +47,15 @@ namespace Entities.Converters
             _maze = maze;
         }
 
-        public byte[] GetMaze(bool drawPath, string path)
+        public Bitmap GetMaze(bool drawPath)
         {
             _timer = new Timer("Saving maze");
-            using (Bitmap bitmap = new Bitmap((int)Math.Round(_maze.Width * _cellWidth), (int)Math.Round(_maze.Height * _cellHeight)))
-            using (var stream = new MemoryStream())
+            Bitmap bitmap = new Bitmap((int)Math.Round(_maze.Width * _cellWidth), (int)Math.Round(_maze.Height * _cellHeight));
             using (_entranceBrush)
             using (_exitBrush)
             using (_inactiveBrush)
-            using(_edgePen)
+            using (_edgePen)
             {
-
                 _timer.Start(_maze.Width * _maze.Height);
                 using (img = Graphics.FromImage(bitmap))
                 {
@@ -69,12 +66,10 @@ namespace Entities.Converters
                     DrawWalls();
                     DrawStart();
                     DrawEnd();
+
                 };
-                var postfix = drawPath ? "solution" : "maze";
-                bitmap.Save(path, ImageFormat.Png);
-                bitmap.Save(stream, ImageFormat.Png);
                 _timer.Stop();
-                return stream.ToArray();
+                return bitmap;
             }
         }
 
