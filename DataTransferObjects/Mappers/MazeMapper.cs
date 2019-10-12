@@ -1,4 +1,5 @@
-﻿using Entities.Mazes;
+﻿using Common.Enums;
+using Entities.Mazes;
 
 namespace DataTransferObjects.Mappers
 {
@@ -10,7 +11,7 @@ namespace DataTransferObjects.Mappers
             Width = entity.Width,
             Shape = entity.Shape,
             Length = entity.Length,
-            GenerationType = Common.GenerationType.RandomList,
+            GenerationType = GenerationType.RandomList,
             NumberOfCells = entity.NumberOfCells
         };
     }

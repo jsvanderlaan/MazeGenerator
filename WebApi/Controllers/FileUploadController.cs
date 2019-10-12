@@ -2,7 +2,6 @@
 using System.IO;
 using System.Threading.Tasks;
 using Entities.Converters;
-using Common;
 using System;
 using Entities.Mazes;
 using System.Drawing;
@@ -11,6 +10,9 @@ using DataAccess;
 using System.Collections.Generic;
 using DataTransferObjects.Mappers;
 using DataTransferObjects;
+using Common.Enums;
+using Common.Extensions;
+using Common;
 
 namespace WebApi.Controllers
 {
@@ -31,6 +33,11 @@ namespace WebApi.Controllers
         [HttpPost]
         public async Task<string> Post()
         {
+            var imageToGridTimer = new Timer(TimerCategory.Maze, TimerTask.ImageToGrid);
+            var generationTimer = new Timer(TimerCategory.Maze, TimerTask.GenerateMaze);
+            var mazeToImageTimer = new Timer(TimerCategory.Maze, TimerTask.MazeToImage, TimerAction.WithoutSolution);
+            var mazeToSolutionImageTimer = new Timer(TimerCategory.Maze, TimerTask.MazeToImage, TimerAction.WithSolution);
+
             var request = await HttpContext.Request.ReadFormAsync();
             var formFile = request.Files?[0];
             if (formFile == null) throw new FileNotFoundException();
@@ -38,31 +45,53 @@ namespace WebApi.Controllers
             string response;
             using (var original = Image.FromStream(formFile.OpenReadStream()))
             {
+                imageToGridTimer.Start();
                 var grid = ImageToGridConverter.Convert(new Bitmap(original), 100, 0.5, true, _shape);
+                imageToGridTimer.Stop();
+
+                generationTimer.Start();
                 var maze = new Maze(grid, _shape, true).GenerateWithRandomList();
+                generationTimer.Stop();
+
                 var imageConverter = new MazeToImageConverter(maze);
                 var solutionConverter = new MazeToImageConverter(maze);
                 using (var imageStream = new MemoryStream())
                 using (var solutionStream = new MemoryStream())
                 using (var originalStream = new MemoryStream())
-                using (var image = imageConverter.GetMaze(false))
-                using (var solution = solutionConverter.GetMaze(true))
                 {
-                    image.Save(imageStream, ImageFormat.Png);
-                    solution.Save(solutionStream, ImageFormat.Png);
-                    original.Save(originalStream, original.RawFormat);
-                    originalStream.Position = 0;
-                    imageStream.Position = 0;
-                    solutionStream.Position = 0;
-                    var name = Path.GetFileNameWithoutExtension(formFile.FileName);
-                    var extension = Path.GetExtension(formFile.FileName);
-                    await _mazeRepository.StoreMaze(_mapper.Map(maze), new List<ImageDto>
+                    mazeToImageTimer.Start();
+                    using (var image = imageConverter.GetMaze(false))
                     {
-                        new ImageDto { Data = originalStream, Name = $"{name}{extension}", ContentType = original.RawFormat.GetMimeType() },
-                        new ImageDto { Data = imageStream, Name = $"{name}_maze.png", ContentType = ImageFormat.Png.GetMimeType() },
-                        new ImageDto { Data = solutionStream, Name = $"{name}_solution.png", ContentType = ImageFormat.Png.GetMimeType() },
-                    });
-                    response = Convert.ToBase64String(imageStream.ToArray());
+                        mazeToImageTimer.Stop();
+                        mazeToSolutionImageTimer.Start();
+                        using (var solution = solutionConverter.GetMaze(true))
+                        {
+                            mazeToSolutionImageTimer.Stop();
+                            image.Save(imageStream, ImageFormat.Png);
+                            solution.Save(solutionStream, ImageFormat.Png);
+                            original.Save(originalStream, original.RawFormat);
+                            originalStream.Position = 0;
+                            imageStream.Position = 0;
+                            solutionStream.Position = 0;
+                            var name = Path.GetFileNameWithoutExtension(formFile.FileName);
+                            var extension = Path.GetExtension(formFile.FileName);
+                            var images = new List<ImageDto>
+                            {
+                                new ImageDto { Data = originalStream, Name = $"{name}{extension}", ContentType = original.RawFormat.GetMimeType() },
+                                new ImageDto { Data = imageStream, Name = $"{name}_maze.png", ContentType = ImageFormat.Png.GetMimeType() },
+                                new ImageDto { Data = solutionStream, Name = $"{name}_solution.png", ContentType = ImageFormat.Png.GetMimeType() },
+                            };
+                            var timers = new List<Timer>
+                            {
+                                imageToGridTimer,
+                                generationTimer,
+                                mazeToSolutionImageTimer,
+                                mazeToImageTimer
+                            };
+                            await _mazeRepository.StoreMaze(_mapper.Map(maze), images, timers);
+                            response = Convert.ToBase64String(imageStream.ToArray());
+                        }
+                    }
                 }
             }
 

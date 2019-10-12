@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Drawing;
 using Common;
+using Common.Enums;
 using Entities.Cells;
 using Entities.Factories;
 
@@ -10,7 +11,7 @@ namespace Entities.Converters
     {
         public static Boolean[,] Convert(Bitmap bitmap, int outputHeight, double brightness, bool minimal, Shape shape)
         {
-            var timer = new Timer("Processing image");
+            var timer = new TimerLoadingbar("Processing image");
             var input = bitmap;
             ICell cell = new CellFactory().CreateCell(shape, -1, -1, false);
 

@@ -1,4 +1,5 @@
-﻿using Common;
+﻿using Common.Enums;
+using System.Collections.Generic;
 
 namespace DataTransferObjects
 {
@@ -11,6 +12,7 @@ namespace DataTransferObjects
         public int Length { get; set; }
         public GenerationType GenerationType { get; set; }
         public Shape Shape { get; set; }
+        public List<string> Timers { get; set; }
 
         //Todo: processtimes
     }

@@ -1,4 +1,5 @@
-﻿using DataTransferObjects;
+﻿using Common;
+using DataTransferObjects;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -10,9 +11,9 @@ namespace DataAccess
         {
         }
 
-        public async Task StoreMaze(MazeDto entity, List<ImageDto> images)
+        public async Task StoreMaze(MazeDto entity, List<ImageDto> images, List<Timer> timers)
         {
-            await Store(entity, images);
+            await Store(entity, images, timers);
         }
     }
 }

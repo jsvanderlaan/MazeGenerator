@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Drawing;
 using Common;
+using Common.Enums;
 
 namespace Entities.Cells
 {

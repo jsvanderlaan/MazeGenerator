@@ -7,12 +7,14 @@ using System.Drawing.Imaging;
 using System.Linq;
 using Entities.Cells;
 using System.IO;
+using Common.Extensions;
+using Common.Enums;
 
 namespace Entities.Converters
 {
     public class MazeToImageConverter
     {
-        private Timer _timer;
+        private TimerLoadingbar _timer;
 
         private readonly int _cellSize;
         private readonly double _cellWidth;
@@ -49,7 +51,7 @@ namespace Entities.Converters
 
         public Bitmap GetMaze(bool drawPath)
         {
-            _timer = new Timer("Saving maze");
+            _timer = new TimerLoadingbar("Saving maze");
             Bitmap bitmap = new Bitmap((int)Math.Round(_maze.Width * _cellWidth), (int)Math.Round(_maze.Height * _cellHeight));
             using (_entranceBrush)
             using (_exitBrush)

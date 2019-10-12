@@ -1,77 +1,46 @@
-﻿using System;
+﻿using Common.Enums;
+using System;
 
 namespace Common
 {
     public class Timer
     {
-        private int _steps = 0;
-        private int _count = 0;
-        private int _sections = 0;
-        private double _sectionLength; 
-        private double _boundary;
-        private int _currBoundary = 0;
-        private readonly string _name;
-        private DateTime _start;
-        private DateTime _end;
-        private bool _loadingbar;
-        private char _topChar = 'v';
-        private char _bottomChar = '|';
-        private bool _stopped = false;
-
-        public Timer(string name)
+        public Timer(TimerCategory timerCategory, TimerTask timerTask) : this(timerCategory, timerTask, TimerAction.None) { }
+        public Timer(TimerCategory timerCategory, TimerTask timerTask, TimerAction timerAction)
         {
-            _name = name;
+            TimerCategory = timerCategory;
+            TimerTask = timerTask;
+            TimerAction = timerAction;
         }
-
-        public void Start()
+        public string Id { get; set; }
+        public TimerCategory TimerCategory { get; }
+        public TimerTask TimerTask { get; }
+        public TimerAction TimerAction { get; }
+        public DateTime StartTime { get; set; }
+        public DateTime StopTime { get; set; }
+        public double ElapsedMilliseconds { get => ElapsedTimeSpan.TotalMilliseconds; }
+        public double ElapsedSeconds { get => ElapsedTimeSpan.TotalSeconds; }
+        public double ElapsedMinutes { get => ElapsedTimeSpan.TotalMinutes; }
+        public DateTime Start()
         {
-            _start = DateTime.Now;
-            Console.WriteLine($"{_start}: {_name} started");
+            if (StartTime != DateTime.MinValue) throw new InvalidOperationException("Timer already started");
+            StartTime = DateTime.Now;
+            return StartTime;
         }
-
-        public void Start(int numberOfSteps, int loadingbarLength = 100)
+        public DateTime Stop()
         {
-            Start();
-            _sections = loadingbarLength;
-            _loadingbar = true;
-            _steps = numberOfSteps;
-            _sectionLength = _steps / (double)loadingbarLength;
-            _boundary = _sectionLength;
-            for(int i = 0; i < loadingbarLength; i++) Console.Write(_topChar);
-            Console.WriteLine();
+            if (StopTime != DateTime.MinValue) throw new InvalidOperationException("Timer already stopped");
+            StopTime = DateTime.Now;
+            return StopTime;
         }
-
-        public void Next()
+        private TimeSpan ElapsedTimeSpan
         {
-            if (_loadingbar)
+            get
             {
-                _count++;
-                if (_count >= _steps)
-                {
-                    _currBoundary++;
-                    Stop();
-                }
-                else if (_count >= _boundary)
-                {
-                    _boundary += _sectionLength;
-                    _currBoundary++;
-                    Console.Write(_bottomChar);
-                }
+                if (StartTime == DateTime.MinValue) return TimeSpan.Zero;
+                if (StopTime == DateTime.MinValue) return DateTime.Now.Subtract(StartTime);
+                return StopTime.Subtract(StartTime);
             }
-        }
-
-        public void Stop()
-        {
-            if (_stopped) return;
-            _stopped = true;
-            if (_loadingbar)
-            {
-                for (int i = 0; i < _sections - _currBoundary; i++) Console.Write(_bottomChar);
-                Console.WriteLine();
-            }
-            _end = DateTime.Now;
-            Console.WriteLine($"{_end}: {_name} ended in {(int)_end.Subtract(_start).TotalMilliseconds} milliseconds");
-            Console.WriteLine();
         }
     }
 }

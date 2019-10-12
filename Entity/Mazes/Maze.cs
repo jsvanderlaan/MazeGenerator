@@ -7,6 +7,8 @@ using Common;
 using Entities.Cells;
 using System.Text;
 using Entities.Factories;
+using Common.Enums;
+using Common.Extensions;
 
 namespace Entities.Mazes
 {
@@ -41,7 +43,7 @@ namespace Entities.Mazes
 
             _cellFactory = new CellFactory();
 
-            var initTimer = new Timer("Initializing maze");
+            var initTimer = new TimerLoadingbar("Initializing maze");
             initTimer.Start(Width * Height);
 
             _useEdges = useEdges;
@@ -102,7 +104,7 @@ namespace Entities.Mazes
         public Maze GenerateWithRandomList()
         {
             int size = Cells().Where(c => c.Active).Count();
-            var stackTimer = new Timer("Creating maze with random list");
+            var stackTimer = new TimerLoadingbar("Creating maze with random list");
             stackTimer.Start(size);
 
             Position cPos = StartingCell.Position;
@@ -150,7 +152,7 @@ namespace Entities.Mazes
         public Maze GenerateWithStack()
         {
             int size = Cells().Where(c => c.Active).Count();
-            var stackTimer = new Timer("Creating maze with stack");
+            var stackTimer = new TimerLoadingbar("Creating maze with stack");
             stackTimer.Start(size);
 
             Position cPos = StartingCell.Position;

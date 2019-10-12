@@ -1,4 +1,4 @@
-﻿using Common;
+﻿using Common.Enums;
 using Entities.Cells;
 
 namespace Entities.Factories
