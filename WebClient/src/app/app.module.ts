@@ -12,6 +12,7 @@ import { HeaderComponent } from './components/header/header.component';
 import { FileSizePipe } from './pipes/file-size.pipe';
 import { CountService } from './services/count.service';
 import { BaseService } from './services/base.service';
+import { ExerciseGeneratorComponent } from './components/exercise-generator/exercise-generator.component';
 
 @NgModule({
   declarations: [
@@ -19,6 +20,7 @@ import { BaseService } from './services/base.service';
     FileuploaderComponent,
     ResultDisplayComponent,
     HeaderComponent,
+    ExerciseGeneratorComponent,
     FileSizePipe
   ],
   imports: [
