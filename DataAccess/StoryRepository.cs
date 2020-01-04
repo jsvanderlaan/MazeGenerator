@@ -10,6 +10,6 @@ namespace DataAccess
         public StoryRepository() : base("Stories") { }
 
         public async Task StoreStory(Story story) => await Store(story);
-        public async Task<List<Story>> GetStories() => await Get(session => session.Query<Story>().ToListAsync());
+        public async Task<List<Story>> GetStories() => await Get(session => session.Query<Story>().OrderByDescending(story => story.CreationTime).ToListAsync());
     }
 }
