@@ -7,15 +7,32 @@
             <app-header></app-header>
         </div>
     </div>
+    <div class="row">
+        <div class="col-md-12">
+            <ngb-tabset>
+                <ngb-tab title="Stories">
+                    <ng-template ngbTabContent>
+                        <app-story></app-story>
+                    </ng-template>
+                </ngb-tab>
+                <ngb-tab title="Mazes">
+                    <ng-template ngbTabContent>
+                        <div class="row">
+                        <div class="col-md-6 order-md-12">
+                            <app-result-display [result]="result"></app-result-display>
+                        </div>
+                        <div class="col-md-6">
+                            <app-fileuploader (result)="onResult($event)"></app-fileuploader>
+                        </div>
+                    </div>
+                    </ng-template>
+                </ngb-tab>
+            </ngb-tabset>
+        </div>
+    </div>
     <!-- <div class="row border-between"> -->
-        <app-story></app-story>
         <!-- <app-exercise-generator>
         </app-exercise-generator> -->
-        <!-- <div class="col-md-6 order-md-12">
-            <app-result-display [result]="result"></app-result-display>
-        </div>
-        <div class="col-md-6">
-            <app-fileuploader (result)="onResult($event)"></app-fileuploader>
-        </div> -->
+        <!--  -->
     <!-- </div> -->
 </div>

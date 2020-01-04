@@ -17,6 +17,7 @@ import { ExerciseGeneratorComponent } from './components/exercise-generator/exer
 import { StoryComponent } from './components/story/story.component';
 import { StoryFormComponent } from './components/story-form/story-form.component';
 import { StoryViewComponent } from './components/story-view/story-view.component';
+import { NgbTabsetModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   declarations: [
@@ -35,6 +36,7 @@ import { StoryViewComponent } from './components/story-view/story-view.component
     AppRoutingModule,
     HttpClientModule,
     FormsModule,
+    NgbTabsetModule
   ],
   providers: [
     FileUploadService,

@@ -1,10 +1,10 @@
 <div class="row">
-    <div class="col-md-5 order-md-last">
+    <div class="col-md-5 order-md-last mt-4">
         <div class="sticky-top">
             <app-story-form (saved)="storySaved($event)"></app-story-form>
         </div>
     </div>
-    <div class="col-md-7" *ngIf="stories && stories.length > 0">
+    <div class="col-md-7 mt-4" *ngIf="stories && stories.length > 0">
         <ng-container *ngFor="let story of stories">
             <app-story-view [story]="story"></app-story-view>
         </ng-container>
