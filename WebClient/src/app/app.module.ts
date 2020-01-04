@@ -1,5 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -13,6 +14,9 @@ import { FileSizePipe } from './pipes/file-size.pipe';
 import { CountService } from './services/count.service';
 import { BaseService } from './services/base.service';
 import { ExerciseGeneratorComponent } from './components/exercise-generator/exercise-generator.component';
+import { StoryComponent } from './components/story/story.component';
+import { StoryFormComponent } from './components/story-form/story-form.component';
+import { StoryViewComponent } from './components/story-view/story-view.component';
 
 @NgModule({
   declarations: [
@@ -21,12 +25,16 @@ import { ExerciseGeneratorComponent } from './components/exercise-generator/exer
     ResultDisplayComponent,
     HeaderComponent,
     ExerciseGeneratorComponent,
+    StoryComponent,
+    StoryFormComponent,
+    StoryViewComponent,
     FileSizePipe
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    HttpClientModule
+    HttpClientModule,
+    FormsModule,
   ],
   providers: [
     FileUploadService,

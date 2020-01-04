@@ -13,4 +13,6 @@ export class BaseService {
     post(endpoint: string, data: any): Observable<any> {
       return this.http.post<any>(this.baseEndpoint + endpoint, data);
     }
+
+    get = (endpoint: string) => this.http.get<any>(this.baseEndpoint + endpoint);
 }

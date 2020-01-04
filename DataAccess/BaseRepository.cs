@@ -1,8 +1,10 @@
 ﻿using Common;
 using DataTransferObjects;
+using Entities.Story;
 using Raven.Client.Documents;
 using Raven.Client.Documents.Session;
 using Raven.Embedded;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -35,6 +37,15 @@ namespace DataAccess
                 await session.StoreAsync(maze);
                 images.ForEach(image => session.Advanced.Attachments.Store(maze, image.Name, image.Data, image.ContentType));
                 await session.SaveChangesAsync();
+            }
+        }
+
+        public async Task<List<T>> Get<T>(Func<IAsyncDocumentSession, Task<List<T>>> func)
+        {
+            using (IAsyncDocumentSession session = _store.OpenAsyncSession())
+            {
+                var res = await func(session);
+                return res;
             }
         }
     }

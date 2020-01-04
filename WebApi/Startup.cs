@@ -36,7 +36,8 @@ namespace WebApi
 
             services
                 .AddSingleton<IMazeRepository, MazeRepository>()
-                .AddSingleton<ICountRepository, CountRepository>();
+                .AddSingleton<ICountRepository, CountRepository>()
+                .AddSingleton<IStoryRepository, StoryRepository>();
             
             services
                 .AddCors(options =>

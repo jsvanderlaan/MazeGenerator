@@ -1,0 +1,33 @@
+
+<div class="card mb-4" style="background-color: rgba(245, 245, 245, 0.1);">
+        <div class="card-body">
+
+<form #storyForm="ngForm" (ngSubmit)="onSubmit(); storyForm.reset()" class="text-center">
+    <p class="h4 mb-4">Add story</p>
+    <div class="form-group">
+        <label for="author">Name</label>
+        <input type="text" class="form-control" id="author" required [(ngModel)]="author" name="author" #authorControl="ngModel" >
+        <div [hidden]="authorControl.valid || authorControl.pristine" class="alert alert-danger">Invullen Jos :( </div>
+    </div>
+
+    <div class="form-group">
+        <label for="title">Title</label>
+        <input type="text" class="form-control" id="title" required [(ngModel)]="title" name="title" #titleControl="ngModel">
+        <div [hidden]="titleControl.valid || titleControl.pristine" class="alert alert-danger">Invullen Jos :( </div>
+    </div>
+
+    <div class="form-group">
+        <label for="story">Story</label>
+        <textarea type="text" class="form-control" id="story" required [(ngModel)]="story" name="story" #storyControl="ngModel"></textarea>
+        <div [hidden]="storyControl.valid || storyControl.pristine" class="alert alert-danger">Invullen Jos :( </div>
+    </div>
+
+    <button type="submit" [disabled]="!storyForm.form.valid" class="btn btn-warning">Submit</button>
+    
+    <div *ngIf="submitted" class="alert alert-success mt-4" role="alert">
+        Story added!
+    </div>
+</form>
+
+</div>
+</div>
