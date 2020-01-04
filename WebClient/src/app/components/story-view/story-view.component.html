@@ -2,7 +2,7 @@
     <div class="card-body">
         <blockquote class="card-text blockquote mb-0">
             <header class="blockquote-header"><strong>{{story.title}}</strong></header>
-            <small>{{story.message}}</small>
+            <small style="white-space: pre-wrap;">{{story.message}}</small>
             <footer class="blockquote-footer text-right">By <cite title="Author">{{story.author}}</cite></footer>
         </blockquote>
         <p class="card-text"><small class="text-muted">{{story.creationTime | date: 'd MMMM yyyy, HH:mm'}}</small></p>
