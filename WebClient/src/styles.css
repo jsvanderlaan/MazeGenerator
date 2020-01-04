@@ -3,6 +3,10 @@
     background-color: rgba(245, 245, 245, 0.4);
 }
 
+.u-opac-high{
+    background-color: rgba(245, 245, 245, 0.8);
+}
+
 .nav-link.active {
     background-color: rgba(245, 245, 245, 0.4) !important;
 }
