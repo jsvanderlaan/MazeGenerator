@@ -1,6 +1,6 @@
 /* You can add global styles to this file, and also import other style files */
 .u-opac{
-    background-color: rgba(245, 245, 245, 0.4);
+    background-color: rgba(245, 245, 245, 0.6);
 }
 
 .u-opac-high{
@@ -8,5 +8,5 @@
 }
 
 .nav-link.active {
-    background-color: rgba(245, 245, 245, 0.4) !important;
+    background-color: rgba(245, 245, 245, 0.6) !important;
 }
