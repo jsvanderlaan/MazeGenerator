@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild, ElementRef, ChangeDetectorRef } from "@an
 import { HubConnectionBuilder, HubConnection } from '@aspnet/signalr';
 import { LoginService } from 'src/app/services/login.service';
 import { ChatMessage } from 'src/app/models/chat-message.model';
+import { environment } from 'src/environments/environment';
 
 @Component({
     selector: 'app-chat',
@@ -20,7 +21,8 @@ export class ChatComponent implements OnInit{
     ngOnInit() {
         this._loginService.getUsername$().subscribe(username => this.username = username);
 
-        this.hubConnection = new HubConnectionBuilder().withUrl('http://localhost:50485/chat').build();
+        const prefix: string = environment.production ? '' : 'http://localhost:50485';
+        this.hubConnection = new HubConnectionBuilder().withUrl(`${prefix}/chat`).build();
         this.hubConnection.start().then(() => {
             this.hubConnection.invoke('initChat');
         });
