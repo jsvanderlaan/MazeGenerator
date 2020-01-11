@@ -7,9 +7,19 @@
             <app-header></app-header>
         </div>
     </div>
-    <div class="row">
+    <div class="row" *ngIf="(loggedIn$ | async) === false">
+        <div class="col-md-4 col-sm-12">
+            <app-login></app-login>
+        </div>
+    </div>
+    <div class="row" *ngIf="(loggedIn$ | async) === true">
         <div class="col-md-12">
             <ngb-tabset>
+                <ngb-tab title="Chat">
+                    <ng-template ngbTabContent>
+                        <app-chat></app-chat>
+                    </ng-template>
+                </ngb-tab>
                 <ngb-tab title="Stories">
                     <ng-template ngbTabContent>
                         <app-story></app-story>

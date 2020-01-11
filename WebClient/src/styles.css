@@ -10,3 +10,32 @@
 .nav-link.active {
     background-color: rgba(245, 245, 245, 0.6) !important;
 }
+
+.icon { 
+    display: inline-flex;
+    vertical-align: middle;
+    margin-left: .2em;
+    margin-right: .2em;
+    margin-bottom: 4px;
+}
+
+.u-hover{
+    cursor: pointer;
+}
+
+.u-float-right {
+    float: right;
+}
+
+.chat-wrapper{
+    overflow-y: scroll;
+    max-height: 400px;
+}
+
+.header-title {
+    font-family: 'Simplifica';
+    font-size: 7vh;
+}
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }

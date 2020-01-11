@@ -4,6 +4,8 @@
     {
         None,
         WithSolution,
-        WithoutSolution
+        WithoutSolution,
+        Parallel,
+        Synchroon
     }
 }

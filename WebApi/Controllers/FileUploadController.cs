@@ -33,7 +33,8 @@ namespace WebApi.Controllers
         [HttpPost]
         public async Task<string> Post()
         {
-            var imageToGridTimer = new Timer(TimerCategory.Maze, TimerTask.ImageToGrid);
+            //var imageToGridParallelTimer = new Timer(TimerCategory.Maze, TimerTask.ImageToGrid, TimerAction.Parallel);
+            var imageToGridTimer = new Timer(TimerCategory.Maze, TimerTask.ImageToGrid, TimerAction.Synchroon);
             var generationTimer = new Timer(TimerCategory.Maze, TimerTask.GenerateMaze);
             var mazeToImageTimer = new Timer(TimerCategory.Maze, TimerTask.MazeToImage, TimerAction.WithoutSolution);
             var mazeToSolutionImageTimer = new Timer(TimerCategory.Maze, TimerTask.MazeToImage, TimerAction.WithSolution);
@@ -48,6 +49,9 @@ namespace WebApi.Controllers
                 imageToGridTimer.Start();
                 var grid = ImageToGridConverter.Convert(new Bitmap(original), 100, 0.5, true, _shape);
                 imageToGridTimer.Stop();
+                //imageToGridParallelTimer.Start();
+                //grid =// ImageToGridConverter.ConvertParallel(new Bitmap(original), 100, 0.5, true, _shape);
+                //imageToGridParallelTimer.Stop();
 
                 generationTimer.Start();
                 var maze = new Maze(grid, _shape, true).GenerateWithRandomList();
@@ -86,7 +90,8 @@ namespace WebApi.Controllers
                                 imageToGridTimer,
                                 generationTimer,
                                 mazeToSolutionImageTimer,
-                                mazeToImageTimer
+                                mazeToImageTimer,
+                                //imageToGridParallelTimer
                             };
                             await _mazeRepository.StoreMaze(_mapper.Map(maze), images, timers);
                             response = Convert.ToBase64String(imageStream.ToArray());

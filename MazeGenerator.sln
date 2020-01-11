@@ -34,6 +34,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataAccess", "DataAccess\Da
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataTransferObjects", "DataTransferObjects\DataTransferObjects.csproj", "{70FE7908-E050-4AC9-A573-38E07082BB5C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImageProcessing", "ImageProcessing\ImageProcessing.csproj", "{38DF720B-E416-4180-9165-D17BB00B84FF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -62,6 +64,10 @@ Global
 		{70FE7908-E050-4AC9-A573-38E07082BB5C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{70FE7908-E050-4AC9-A573-38E07082BB5C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{70FE7908-E050-4AC9-A573-38E07082BB5C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{38DF720B-E416-4180-9165-D17BB00B84FF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{38DF720B-E416-4180-9165-D17BB00B84FF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{38DF720B-E416-4180-9165-D17BB00B84FF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{38DF720B-E416-4180-9165-D17BB00B84FF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

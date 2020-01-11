@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Raven.Embedded;
+using WebApi.Hubs;
 
 namespace WebApi
 {
@@ -37,17 +38,20 @@ namespace WebApi
             services
                 .AddSingleton<IMazeRepository, MazeRepository>()
                 .AddSingleton<ICountRepository, CountRepository>()
-                .AddSingleton<IStoryRepository, StoryRepository>();
+                .AddSingleton<IStoryRepository, StoryRepository>()
+                .AddSingleton<IChatRepository, ChatRepository>();
             
             services
                 .AddCors(options =>
                     {
                         options.AddPolicy("localhost", builder =>
                         {
-                            builder.WithOrigins("http://localhost:4200").AllowAnyMethod().AllowAnyHeader();
+                            builder.WithOrigins("http://localhost:4200").AllowAnyMethod().AllowAnyHeader().AllowCredentials();
                         });
                     })
                 .AddMvc();
+
+            services.AddSignalR();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -68,6 +72,8 @@ namespace WebApi
                     await next();
                 }
             });
+
+            app.UseSignalR(routes => routes.MapHub<ChatHub>("/chat"));
             app.UseStaticFiles();
             app.UseMvc();
         }

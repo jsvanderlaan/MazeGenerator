@@ -1,0 +1,8 @@
+<form #loginForm="ngForm" (ngSubmit)="onSubmit()">
+    <div class="form-group">
+        <mat-icon class="icon">person</mat-icon>
+        <label for="name">Wat is je naam? {{name}}</label>
+        <input placeholder="Jos" type="text" class="form-control" id="name" [(ngModel)]="name" name="name">
+    </div>
+    <button type="submit" class="btn btn-warning">Hoepla!</button>
+</form>

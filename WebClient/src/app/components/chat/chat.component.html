@@ -1,0 +1,26 @@
+<div class="row">
+    <div class="col-md-8 col-sm-12 mt-4">
+        <div class="card mb-4 u-opac">
+            <div class="card-body">
+                <div class="mb-2 chat-wrapper" #chatWrapper>
+                <div *ngFor="let message of messages" class="mb-2 ml-1 mr-1 row">
+                    <span class="col-md-8 col-sm-12">{{message.message}}</span>
+                    <div class="col-md-4 col-sm-12">
+                        <small class="u-float-right">{{message.user}} - {{message.dateTime | chatDate}}</small>
+                    </div>
+                </div>
+            </div>
+                <form (ngSubmit)="chatForm.valid && sendMessage()" #chatForm="ngForm" >
+                    <div class="input-group">
+                        <input placeholder="Typ een bericht..." type="text" class="form-control" id="message" required [(ngModel)]="message" name="message" >
+                        <div class="input-group-append">
+                            <button class="btn btn-warning mdc-icon-button material-icons">
+                                send
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
