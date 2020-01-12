@@ -23,6 +23,7 @@ import { LoginComponent } from './components/login/login.component';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import {MatIconModule} from '@angular/material/icon';
 import { ChatDatePipe } from './pipes/chat-date.pipe';
+import { NameValidatorDirective } from './directives/name-validator.directive';
 
 @NgModule({
   declarations: [
@@ -36,6 +37,9 @@ import { ChatDatePipe } from './pipes/chat-date.pipe';
     StoryViewComponent,
     LoginComponent,
     ChatComponent,
+
+    NameValidatorDirective,
+    
     FileSizePipe,
     ChatDatePipe
   ],

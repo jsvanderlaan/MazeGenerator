@@ -6,12 +6,16 @@ export class ChatDatePipe extends DatePipe implements PipeTransform {
 
   transform(date: any) : string {
     if(!date) {
-        return "";
+      return "";
     }
     const today = new Date();
-    if(new Date(date).getDay() == today.getDay()) {
-        return super.transform(date, 'hh:mm');
+    const thisDate = new Date(date);
+    if(thisDate.getDay() == today.getDay()) {
+      return super.transform(date, 'hh:mm');
     }
-    return super.transform(date, 'd M')
+    if(thisDate.getFullYear() !== today.getFullYear()) {
+      return super.transform(date, 'd MMM y');
+    }
+    return super.transform(date, 'd MMM');
   }
 }
