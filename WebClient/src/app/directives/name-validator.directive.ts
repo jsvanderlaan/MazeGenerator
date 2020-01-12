@@ -1,6 +1,6 @@
 import { Directive } from '@angular/core';
-
 import { Validator, FormControl, NG_VALIDATORS } from '@angular/forms';
+import { NameService } from '../services/name.service';
 
 @Directive({
     selector: '[validName][ngModel]',
@@ -9,97 +9,7 @@ import { Validator, FormControl, NG_VALIDATORS } from '@angular/forms';
     ]
   })
   export class NameValidatorDirective implements Validator { 
-
-    private josNames =[{
-        name: 'Jos',
-        nicknames: [
-            'jos',
-            'johooos',
-            'joss'
-        ]
-    }]
-
-    private nicknames = [
-        {
-            name: 'Pam',
-            nicknames: [
-                'pamhoogstraaten',
-                'pammelahoogstraaten',
-                'phoogstraaten'
-            ]
-        },
-        {
-            name: 'Je-ron',
-            nicknames: [
-                'jeroenboonekamp',
-                'jboonekamp',
-                'roeiert',
-                'jeron'
-            ]
-        },
-        {
-            name: 'Bask',
-            nicknames: [
-                'baskerkhof',
-                'bkerkhof',
-                'opperjos'
-            ]
-        },
-        {
-            name: 'Bvdw',
-            nicknames: [
-                'basvanderwaal',
-                'bvdw',
-                'bvanderwaal',
-                'beeveedeewee',
-                'basvdwaal',
-                'bvdwaal'
-            ]
-        },
-        {
-            name: 'Rens',
-            nicknames: [
-                'rensgeerling',
-                'rgeerling',
-                'rensrubengeerling'
-            ]
-        },
-        {
-            name: 'Marloes',
-            nicknames: [
-                'marloeskerkhof',
-                'moeskerkhof'
-            ]
-        },
-        {
-            name: 'Löbker',
-            nicknames: [
-                'ricklobker',
-                'ricklöbker',
-                'rickert',
-                'rickert',
-                'riklobker',
-                'riklöbker'
-            ]
-        },
-        {
-            name: 'Yanus',
-            nicknames: [
-                'yanniekvallenduuk',
-                'yanusvallenduuk',
-                'yvallenduuk'
-            ]
-        },
-        {
-            name: 'Jurre',
-            nicknames: [
-                'jurrevanderlaan',
-                'jurvanderlaan',
-                'rre',
-                'jvdlaan'
-            ]
-        },
-    ]
+    constructor(private _nameService: NameService){ }
 
     validate(c: FormControl) {
         if(!c.value) {
@@ -119,7 +29,7 @@ import { Validator, FormControl, NG_VALIDATORS } from '@angular/forms';
         }
 
         const nameFull: string = c.value;
-        const josnames = this.getNames(nameFull, this.josNames);
+        const josnames = this._nameService.getJosNames(nameFull);
 
         if(josnames.length > 0) {
             return {
@@ -129,7 +39,7 @@ import { Validator, FormControl, NG_VALIDATORS } from '@angular/forms';
             }
         }
 
-        const names = this.getNames(nameFull, this.nicknames);
+        const names = this._nameService.getNames(nameFull);
         if(names.length < 1) {
             return {
                 name: {
@@ -149,12 +59,4 @@ import { Validator, FormControl, NG_VALIDATORS } from '@angular/forms';
         return null;
 
     }
-
-    getNames(value: string, arr: {name: string, nicknames: string[]}[]) {
-        const distinct = (v, i, s) => s.indexOf(v) === i;
-        const validNicknames = [];
-        const name = value.trim().replace(' ', '').replace('-', '').toLowerCase();
-        arr.forEach(nick => nick.nicknames.forEach(n => n.includes(name) && validNicknames.push(nick.name)));
-        return validNicknames.filter(distinct);
-    }
-   }
+}
