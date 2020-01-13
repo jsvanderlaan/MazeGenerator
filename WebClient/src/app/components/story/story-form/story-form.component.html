@@ -5,12 +5,6 @@
 <form #storyForm="ngForm" (ngSubmit)="onSubmit(); storyForm.reset()" class="text-center">
     <p class="h4 mb-4">Add story</p>
     <div class="form-group">
-        <label for="author">Name</label>
-        <input type="text" class="form-control" id="author" required [(ngModel)]="author" name="author" #authorControl="ngModel" >
-        <div [hidden]="authorControl.valid || authorControl.pristine" class="alert alert-danger">Invullen Jos :( </div>
-    </div>
-
-    <div class="form-group">
         <label for="title">Title</label>
         <input type="text" class="form-control" id="title" required [(ngModel)]="title" name="title" #titleControl="ngModel">
         <div [hidden]="titleControl.valid || titleControl.pristine" class="alert alert-danger">Invullen Jos :( </div>

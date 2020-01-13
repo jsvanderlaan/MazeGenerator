@@ -11,7 +11,7 @@ export class ChatDatePipe extends DatePipe implements PipeTransform {
     const today = new Date();
     const thisDate = new Date(date);
     if(thisDate.getDay() == today.getDay()) {
-      return super.transform(date, 'hh:mm');
+      return super.transform(date, 'H:mm');
     }
     if(thisDate.getFullYear() !== today.getFullYear()) {
       return super.transform(date, 'd MMM y');

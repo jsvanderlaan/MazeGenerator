@@ -12,6 +12,6 @@ export class StoryComponent {
         storyService.get().subscribe(stories => this.stories = stories);
     }
     storySaved(event) {
-        this.stories.push(event);
+        this.stories.unshift(event);
     }
 } 
